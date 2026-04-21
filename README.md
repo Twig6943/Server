@@ -24,9 +24,13 @@ Based on [KYBER](https://github.com/ArmchairDevelopers/Kyber) (Star Wars: Battle
 - Dedicated server hosting with up to **48+ players** (vs 24 stock)
 - Headless thin-client mode (server without rendering)
 - Custom playlists with mixed game modes
-- Player moderation (bans, kicks)
+- Player moderation (kicks, bans, moderator system)
+- Hardware fingerprint bans (HWID + component-based tracking)
+- Name validation (slur filter, ID_ blocking, impersonation protection)
+- Side-channel TCP protocol with HMAC challenge-response auth
+- Relay tunnel for NAT traversal
+- Anticheat system (GW2: loadout validation, OOB detection, damage/spawn listeners)
 - Console command system
-- Side-channel protocol for external monitoring
 
 ## Terms of Service
 
@@ -94,7 +98,7 @@ Source/
     Logging.h/cpp         # JSON + colored console logging
     Config.h              # Feature flags (HAS_DEDICATED_SERVER, etc.)
     Settings.h            # Frostbite SettingsManager wrapper
-    VersionInfo.h         # Version constants
+    VersionInfo.h/cpp     # Version constants
     Console/              # Game-specific console commands
   GameHooks/
     fbMainHooks.*         # Core engine hooks (init, main, console)
@@ -105,13 +109,22 @@ Source/
     GW1Module.cpp         # GW1-specific patches and hooks
     GW2Module.cpp         # GW2-specific patches and hooks
     BFNModule.cpp         # BFN-specific patches (Lua console, thin-client UI)
+  Anticheat/              # Server-side cheat detection (GW2)
 include/
+  SideChannel.h/cpp       # Side-channel TCP server/client/tunnel
+  ServerBanlist.h         # Ban system with hardware fingerprinting
+  ServerPlaylist.h        # Playlist rotation logic
+  HWID.h                  # Hardware fingerprint generation
+  FreeCam.h              # Free camera support
+  MemUtil.h              # Memory patching and hooking helpers
+  StringUtil.h           # String utilities
+  IGameModule.h          # Game module interface
+  json.hpp               # nlohmann/json
   Kyber/                  # Socket management (from KYBER project)
   MinHook/                # Runtime function hooking
   fb/                     # Reverse-engineered Frostbite engine types
   EASTL/                  # EA's STL replacement
-  json.hpp               # nlohmann/json
-Cypress/                  # Utility headers (MemUtil, StringUtil, HWID, etc.)
+  GameModules/            # Game module headers
 Examples/                 # Launch script templates
 ```
 
