@@ -6,7 +6,7 @@
 #include <mutex>
 #include <thread>
 #include <chrono>
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 
 namespace Cypress
 {

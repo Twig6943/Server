@@ -8,23 +8,31 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 include(FetchContent)
 
 # Dependencies
-# MinHook
+### MinHook
 FetchContent_Declare(
   minhook
   GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git
   GIT_TAG 1e9ad1eb42db11bfcb65461f687c656612d1b555
 )
 
-# EASTL
+### EASTL
 FetchContent_Declare(
   EASTL
   GIT_REPOSITORY https://github.com/electronicarts/EASTL.git
   GIT_TAG e323f67e5d93fdadcd44f7998069d804697b1945
 )
 
+### json
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG 8167d2f64122c3ef7e5a0d9cab239fdba37aa54c
+)
+
 FetchContent_MakeAvailable(
   minhook
   EASTL
+  nlohmann_json
 )
 
 # Options for variants
@@ -98,6 +106,7 @@ target_link_directories(cypress PRIVATE
 target_link_libraries(cypress PRIVATE
     minhook
     EASTL
+    nlohmann_json
     ws2_32.lib
 )
 
