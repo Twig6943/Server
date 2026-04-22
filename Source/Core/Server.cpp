@@ -94,7 +94,7 @@ namespace Cypress
 
 				if (!Cypress::HandleCommand(std::string(buffer)))
 				{
-					fb::Console::enqueueCommand(std::format("ingame|{}", buffer).c_str());				
+					fb::Console::enqueueCommand(std::format("ingame|{}", buffer).c_str());
 				}
 			}
 		}
@@ -137,7 +137,7 @@ namespace Cypress
 		} while (current < 1000);
 
 		editBoxWndProc = (WNDPROC)SetWindowLongPtrA(m_commandBox, GWLP_WNDPROC, (LONG_PTR)EditBoxWndProcProxy);
-		
+
 		SetWindowTextW(*m_mainWindow, L"PVZ Battle for Neighborville Server");
 		UpdateWindow(*m_mainWindow);
 	}
@@ -402,9 +402,9 @@ namespace Cypress
 	}
 #else // GW1 / GW2
 	void Server::ServerRestartLevel(fb::ConsoleContext& cc)
-	{ 
+	{
 		//fb::PVZServerLevelManager::restartLevel();
-		reinterpret_cast<void(__fastcall*)()>(CYPRESS_GW_SELECT(0x14078EDA0, 0x140674180))();
+		reinterpret_cast<void(__fastcall*)()>(CYPRESS_GW_SELECT(0x14078EDA0, 0x140674180, 0x0))();
 	}
 
 	void Server::ServerLoadLevel(fb::ConsoleContext& cc)
@@ -466,7 +466,7 @@ namespace Cypress
 
 		if (!loadScreenLevelDescription.empty())
 			setup.LoadScreen_LevelDescription = loadScreenLevelDescription;
-		
+
 		if (!loadScreenUIAssetPath.empty())
 			setup.LoadScreen_UIAssetPath = loadScreenUIAssetPath;
 
@@ -729,7 +729,7 @@ namespace Cypress
 		auto func = reinterpret_cast<void* (*)(__int64 arena, int localPlayerId)>(0x141FCEE70);
 		void* msg = func(0x1429386E0, 0);
 #endif
-		
+
 
 		fb::String msgText = message.c_str();
 		float messageDuration = std::clamp(duration, 1.0f, 10.0f);
@@ -1218,7 +1218,7 @@ namespace Cypress
 
 		if (ghostMgr)
 			ghostMgr = *(void**)((*(__int64*)((uintptr_t)ghostMgr + 0x8)) + 0x30);
-		
+
 		unsigned int numGhosts = ghostMgr ? ptrread<unsigned int>(ghostMgr, 0x190) : 0;
 		unsigned int maxPlayerCount = *(int*)(*(__int64*)0x143FEAB80 + 0x44);
 
@@ -1279,7 +1279,7 @@ namespace Cypress
 
 		fb::ServerGhostManager* ghostMgr = serverPeer->GetGhostManager();
 		int ghostcount = ghostMgr ? ghostMgr->ghostCount() : 0;
-		
+
 		fb::SettingsManager* settingsManager = fb::SettingsManager::GetInstance();
 		if (!settingsManager)
 			return;
@@ -1299,7 +1299,7 @@ namespace Cypress
 			playerMgr->spectatorCount(),
 			maxSpectatorCount,
 			maxPlayerCount);
-		
+
 		g_program->GetServer()->SetStatusColumn1(
 			std::format(
 			"FPS: {} \t\t\t\t"
@@ -1321,11 +1321,11 @@ namespace Cypress
 
 		if (prevplayercount > 0 && curplayercount == 0)
 		{
-			reinterpret_cast<void(__fastcall*)()>(CYPRESS_GW_SELECT(0x14078EDA0, 0x140674180, 0))();
+			reinterpret_cast<void(__fastcall*)()>(CYPRESS_GW_SELECT(0x14078EDA0, 0x140674180, 0x0))();
 		}
 
 		prevplayercount = curplayercount;
-		
+
 		fb::LevelSetup setup = ptrread<fb::LevelSetup>(fbServerInstance, CYPRESS_GW_SELECT(0x40, 0x30, 0));
 		if (setup.m_name.length() > 0)
 		{
@@ -1353,7 +1353,7 @@ namespace Cypress
 			g_program->GetServer()->SetStatusColumn2("Level: No level");
 		}
 #endif
-		
+
 		static size_t tick = 0;
 		size_t fps = int(1.0f / currentDeltaTime);
 		if (tick != fps)
