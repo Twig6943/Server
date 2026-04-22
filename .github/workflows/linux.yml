@@ -48,10 +48,6 @@ jobs:
         with:
           name: DLL
           path: |
-<<<<<<< HEAD
-            dinput8.dll
-=======
             cypress_GW1.dll
             cypress_GW2.dll
             cypress_BFN.dll
->>>>>>> 37afcfe (- Migrate to CMake)
