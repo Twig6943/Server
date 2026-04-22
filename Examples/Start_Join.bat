@@ -1,5 +1,5 @@
-set PLAYERNAME=UsernameGoesHere
-set IPADDRESS=192.168.1.91:25200
+set PLAYERNAME=Player
+set IPADDRESS=0.0.0.0:25200
 
 start GW2.Main_Win64_Retail.exe ^
 -playerName %PLAYERNAME% ^
