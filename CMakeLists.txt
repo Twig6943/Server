@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 project(Cypress LANGUAGES CXX)
 
-include(FetchContent)
-
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+include(FetchContent)
 
 # Dependencies
 # MinHook
@@ -14,7 +15,17 @@ FetchContent_Declare(
   GIT_TAG 1e9ad1eb42db11bfcb65461f687c656612d1b555
 )
 
-FetchContent_MakeAvailable(minhook)
+# EASTL
+FetchContent_Declare(
+  EASTL
+  GIT_REPOSITORY https://github.com/electronicarts/EASTL.git
+  GIT_TAG e323f67e5d93fdadcd44f7998069d804697b1945
+)
+
+FetchContent_MakeAvailable(
+  minhook
+  EASTL
+)
 
 # Options for variants
 option(CYPRESS_GW1 "Build GW1 version" OFF)
