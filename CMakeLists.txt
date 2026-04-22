@@ -1,8 +1,20 @@
 cmake_minimum_required(VERSION 3.20)
 project(Cypress LANGUAGES CXX)
 
+include(FetchContent)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+# Dependencies
+# MinHook
+FetchContent_Declare(
+  minhook
+  GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git
+  GIT_TAG 1e9ad1eb42db11bfcb65461f687c656612d1b555
+)
+
+FetchContent_MakeAvailable(minhook)
 
 # Options for variants
 option(CYPRESS_GW1 "Build GW1 version" OFF)
@@ -73,6 +85,7 @@ target_link_directories(cypress PRIVATE
 )
 
 target_link_libraries(cypress PRIVATE
+    minhook
     EASTL
     ws2_32.lib
 )
