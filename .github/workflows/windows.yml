@@ -33,6 +33,6 @@ jobs:
         with:
           name: DLL
           path: |
-            cypress_GW1.dll
-            cypress_GW2.dll
-            cypress_BFN.dll
+            build/Release/cypress_GW1.dll
+            build/Release/cypress_GW2.dll
+            build/Release/cypress_BFN.dll

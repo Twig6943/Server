@@ -39,8 +39,10 @@ jobs:
           ./msvc-wine/vsdownload.py --accept-license --dest $WINDOWS_SDK_PATH
           ./msvc-wine/install.sh $WINDOWS_SDK_PATH
           export PATH=$WINDOWS_SDK_PATH/bin/x64:$PATH
-          cmake . -B . -DCMAKE_BUILD_TYPE=Release -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
-          make -j$(nproc)
+          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW1=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW2=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_BFN=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          make -C build -j$(nproc)
           EOF
 
       - name: Upload artifact/s
@@ -48,6 +50,6 @@ jobs:
         with:
           name: DLL
           path: |
-            cypress_GW1.dll
-            cypress_GW2.dll
-            cypress_BFN.dll
+            build/cypress_GW1.dll
+            build/cypress_GW2.dll
+            build/cypress_BFN.dll
