@@ -1,9 +1,8 @@
 name: Build & Release
 
 on:
-  push:
-    branches: [main]
-    tags: ['v*']
+  workflow_dispatch:
+  tags: ["v*"]
   pull_request:
     branches: [main]
 
@@ -18,20 +17,20 @@ jobs:
         game: [GW1, GW2, BFN]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Build Cypress - ${{ matrix.game }}
-      run: msbuild GW2ServerProject.vcxproj "/p:Configuration=Release - ${{ matrix.game }}" /p:Platform=x64 /m
+      - name: Build Cypress - ${{ matrix.game }}
+        run: msbuild GW2ServerProject.vcxproj "/p:Configuration=Release - ${{ matrix.game }}" /p:Platform=x64 /m
 
-    - name: Upload DLL
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress_${{ matrix.game }}
-        path: x64/Release - ${{ matrix.game }}/cypress_${{ matrix.game }}.dll
+      - name: Upload DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress_${{ matrix.game }}
+          path: x64/Release - ${{ matrix.game }}/cypress_${{ matrix.game }}.dll
 
   release:
     needs: build
@@ -39,16 +38,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download all artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: dlls
-        merge-multiple: true
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dlls
+          merge-multiple: true
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        files: dlls/**/*.dll
-        generate_release_notes: true
-        draft: false
-        prerelease: false
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dlls/**/*.dll
+          generate_release_notes: true
+          draft: false
+          prerelease: false
