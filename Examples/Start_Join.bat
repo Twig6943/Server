@@ -7,4 +7,4 @@ start GW2.Main_Win64_Retail.exe ^
 #-password password goes here if the server has a password ^
 -runMultipleGameInstances ^
 -Client.ServerIp %IPADDRESS% ^
-#-dataPath "D:\Origin Games\Garden Warfare 2 Server\ModData\Default"
+#-dataPath "ModData\Default"
