@@ -25,7 +25,13 @@ jobs:
           call "%ProgramFiles(x86)%\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
           mkdir build
           cd build
-          cmake .. -G "Visual Studio 18 2026"
+          cmake .. -G "Visual Studio 18 2026" -DCYPRESS_GW1=ON
+          cmake --build . --config Release
+
+          cmake .. -G "Visual Studio 18 2026" -DCYPRESS_GW2=ON
+          cmake --build . --config Release
+
+          cmake .. -G "Visual Studio 18 2026" -DCYPRESS_BFN=ON
           cmake --build . --config Release
 
       - name: Upload artifact/s
