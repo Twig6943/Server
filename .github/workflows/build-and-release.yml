@@ -2,8 +2,6 @@ name: Build & Release
 
 on:
   workflow_dispatch:
-  push:
-    tags: ["v*"]
   pull_request:
     branches: [main]
 
@@ -13,42 +11,40 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        game: [GW1, GW2, BFN]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v6
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Install Visual Studio Build Tools
+        shell: pwsh
+        run: |
+          choco install visualstudio2026buildtools `
+            --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended" `
+            -y
+          choco install cmake -y
 
-      - name: Build Cypress - ${{ matrix.game }}
-        run: msbuild GW2ServerProject.vcxproj "/p:Configuration=Release - ${{ matrix.game }}" /p:Platform=x64 /m
+      - name: Build
+        shell: cmd
+        run: |
+          call "%ProgramFiles(x86)%\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          mkdir build
+          cd build
+          cmake --fresh .. -G "Visual Studio 18 2026" -DCYPRESS_GW1=ON
+          cmake --build . --config Release
 
-      - name: Upload DLL
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress_${{ matrix.game }}
-          path: x64/Release - ${{ matrix.game }}/cypress_${{ matrix.game }}.dll
+          cmake --fresh .. -G "Visual Studio 18 2026" -DCYPRESS_GW2=ON
+          cmake --build . --config Release
 
-  release:
-    needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+          cmake --fresh .. -G "Visual Studio 18 2026" -DCYPRESS_BFN=ON
+          cmake --build . --config Release
 
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dlls
-          merge-multiple: true
-
-      - name: Create GitHub Release
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dlls/**/*.dll
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: |
+            build/Release/cypress_GW1.dll
+            build/Release/cypress_GW2.dll
+            build/Release/cypress_BFN.dll

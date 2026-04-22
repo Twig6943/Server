@@ -39,13 +39,13 @@ jobs:
           ./msvc-wine/vsdownload.py --accept-license --dest $WINDOWS_SDK_PATH
           ./msvc-wine/install.sh $WINDOWS_SDK_PATH
           export PATH=$WINDOWS_SDK_PATH/bin/x64:$PATH
-          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW1=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          cmake --fresh . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW1=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
           make -C build -j$(nproc)
 
-          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW2=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          cmake --fresh . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_GW2=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
           make -C build -j$(nproc)
 
-          cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_BFN=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
+          cmake --fresh . -B build -DCMAKE_BUILD_TYPE=Release -DCYPRESS_BFN=ON -DWINDOWS_SDK_PATH=$WINDOWS_SDK_PATH -DCMAKE_TOOLCHAIN_FILE=./toolchain-linux-winsdk.cmake
           make -C build -j$(nproc)
           EOF
 
