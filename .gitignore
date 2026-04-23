@@ -45,10 +45,8 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-# Kate
-*.kate-swp
-
-build/
+[Bb]uild/
+__cmake_systeminformation
 .ninja_deps
 .ninja_lock
 .ninja_log
