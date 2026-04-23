@@ -22,6 +22,14 @@ FetchContent_Declare(
   GIT_TAG e323f67e5d93fdadcd44f7998069d804697b1945
 )
 
+FetchContent_Declare(
+  EABase
+  GIT_REPOSITORY https://github.com/electronicarts/EABase.git
+  GIT_TAG 0699a15efdfd20b6cecf02153bfa5663decb653c
+  GIT_SUBMODULES ""
+  GIT_SHALLOW TRUE
+)
+
 ### json
 FetchContent_Declare(
     nlohmann_json
@@ -32,6 +40,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(
   minhook
   EASTL
+  EABase
   nlohmann_json
 )
 
